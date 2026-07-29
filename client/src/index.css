@@ -11,3 +11,27 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.hero-section {
+    min-height: calc(100vh - 76px);
+    display: flex;
+    align-items: center;
+}
+
+html,
+body,
+#root {
+    height: 100%;
+    margin: 0;
+}
+
+.home-layout {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.home-content {
+    flex: 1;
+    overflow: hidden;
+}

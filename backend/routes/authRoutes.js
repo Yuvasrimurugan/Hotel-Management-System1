@@ -2,6 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 
+<<<<<<< HEAD
 const {
   register,
   login,
@@ -19,5 +20,29 @@ router.get("/profile", protect, (req, res) => {
     user: req.user,
   });
 });
+=======
+const authController = require("../controllers/authControllers");
+
+// Register
+router.post("/register", authController.register);
+
+// Login
+router.post("/login", authController.login);
+
+// Logout
+router.post("/logout", authController.logout);
+
+// Forgot Password
+router.post("/forgot-password", authController.forgotPassword);
+
+// Reset Password
+router.post("/reset-password", authController.resetPassword);
+
+// Get Logged-in User
+router.get("/profile", authController.getProfile);
+
+// Update Profile
+router.put("/profile", authController.updateProfile);
+>>>>>>> a0661921be0c44435a670e2ef7f12de7f0cc07ad
 
 module.exports = router;
