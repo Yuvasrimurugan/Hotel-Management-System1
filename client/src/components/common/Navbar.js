@@ -1,65 +1,107 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import "../common/navbar.css"
+
 
 function Navbar() {
+  
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+    
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm sticky-top py-3">
       <div className="container">
 
-        <a className="navbar-brand fw-bold" href="/">
-          HotelMS
-        </a>
+        {/* Logo */}
+        <NavLink
+          className="navbar-brand fw-bold fs-3 text-warning"
+          to="/"
+        >
+          🏨 HotelMS
+        </NavLink>
 
+        {/* Mobile Toggle */}
         <button
           className="navbar-toggler"
+          type="button"
           data-bs-toggle="collapse"
           data-bs-target="#menu"
+          aria-controls="menu"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
 
+        {/* Menu */}
         <div className="collapse navbar-collapse" id="menu">
 
-          <ul className="navbar-nav ms-auto">
+          <ul className="navbar-nav mx-auto">
 
             <li className="nav-item">
-              <Link className="nav-link" to="/">
+              <NavLink
+                to="/"
+                end
+                className={({ isActive }) =>
+                  `nav-link px-3 ${isActive ? "active text-warning fw-semibold" : ""}`
+                }
+              >
                 Home
-              </Link>
+              </NavLink>
             </li>
 
             <li className="nav-item">
-              <Link className="nav-link" to="/hotels">
+              <NavLink
+                to="/hotels"
+                className={({ isActive }) =>
+                  `nav-link px-3 ${isActive ? "active text-warning fw-semibold" : ""}`
+                }
+              >
                 Hotels
-              </Link>
-
+              </NavLink>
             </li>
 
             <li className="nav-item">
-              <Link className="nav-link" to="/aboutus">
+              <NavLink
+                to="/aboutus"
+                className={({ isActive }) =>
+                  `nav-link px-3 ${isActive ? "active text-warning fw-semibold" : ""}`
+                }
+              >
                 About
-              </Link>
-
+              </NavLink>
             </li>
 
             <li className="nav-item">
-              <Link className="nav-link" to="/contactus">
+              <NavLink
+                to="/contactus"
+                className={({ isActive }) =>
+                  `nav-link px-3 ${isActive ? "active text-warning fw-semibold" : ""}`
+                }
+              >
                 Contact
-              </Link>
+              </NavLink>
             </li>
-            <li className="nav-item me-2">
-              <Link className="btn btn-outline-light" to="/login">
-                Login
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="btn btn-warning" to="/signup">
-                Sign Up
-              </Link>
-            </li>
+
           </ul>
 
-        </div>
+          {/* Right Side Buttons */}
+          <div className="d-flex gap-2">
 
+            <Link
+              to="/login"
+              className="btn btn-outline-warning rounded-pill px-4"
+            >
+              Login
+            </Link>
+
+            <Link
+              to="/signup"
+              className="btn btn-warning rounded-pill px-4 fw-semibold"
+            >
+              Sign Up
+            </Link>
+
+          </div>
+
+        </div>
       </div>
     </nav>
   );

@@ -1,6 +1,6 @@
 function Features() {
   return (
-    <div className="container mt-5 mb-5">
+    <div className="container mt-3 mb-3">
 
       <h2 className="text-center mb-5">
         Why Choose Us

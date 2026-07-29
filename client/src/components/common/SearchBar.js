@@ -1,6 +1,6 @@
 function SearchBar() {
   return (
-    <div className="container mt-5">
+    <div className="container mt-3">
 
       <div className="card shadow">
 

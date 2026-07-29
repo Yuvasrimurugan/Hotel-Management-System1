@@ -8,7 +8,6 @@ import Footer from "../../components/common/Footer";
 function Home() {
   return (
     <>
-      
       <SearchBar />
       <FeaturedHotels />
       <Features />

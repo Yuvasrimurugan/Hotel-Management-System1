@@ -12,12 +12,20 @@ function FeaturedHotels() {
         {
             name:"Sea View",
             city:"Goa"
-        }
+        },
+        // {
+        //     name:"Sea View",
+        //     city:"Goa"
+        // },
+        // {
+        //     name:"Sea View",
+        //     city:"Goa"
+        // }
     ];
 
     return(
 
-<div className="container mt-5">
+<div className="container mt-3">
 
 <h2 className="text-center mb-4">
 Featured Hotels
@@ -28,13 +36,13 @@ Featured Hotels
 {
 hotels.map((hotel,index)=>(
 
-<div className="col-md-4 mb-4" key={index}>
+<div className="col-md-4 mb-2" key={index}>
 
 <div className="card shadow">
 
 <img
 src="https://images.unsplash.com/photo-1566073771259-6a8506099945"
-height="220"
+height="140"
 className="card-img-top"
 />
 
