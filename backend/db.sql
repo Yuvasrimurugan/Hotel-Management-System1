@@ -1,13 +1,24 @@
 -- user Table query
 
 
-CREATE TABLE users (
-    user_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(150) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    role ENUM('Customer', 'Hotel', 'Admin') NOT NULL DEFAULT 'Customer'
-);
+CREATE TABLE
+  Users (
+    UserID INT AUTO_INCREMENT PRIMARY KEY,
+    FirstName VARCHAR(50) NOT NULL,
+    LastName VARCHAR(50),
+    Email VARCHAR(100) NOT NULL UNIQUE,
+    Phone VARCHAR(20) UNIQUE,
+    PasswordHash VARCHAR(255) NOT NULL,
+    Role ENUM('Admin', 'Manager', 'Receptionist', 'Customer') NOT NULL DEFAULT 'Customer',
+    Gender ENUM('Male', 'Female', 'Other'),
+    DateOfBirth DATE,
+    Address TEXT,
+    ProfileImage VARCHAR(255),
+    IsActive BOOLEAN DEFAULT TRUE,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  );
+
 
 -- //hotels tables query
 
