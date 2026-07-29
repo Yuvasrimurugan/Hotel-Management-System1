@@ -8,12 +8,10 @@ import Footer from "../../components/common/Footer";
 function Home() {
   return (
     <>
-      <Navbar />
-      <Hero />
+      
       <SearchBar />
       <FeaturedHotels />
       <Features />
-      <Footer />
     </>
   );
 }

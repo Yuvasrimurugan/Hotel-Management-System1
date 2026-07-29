@@ -22,32 +22,40 @@ function Navbar() {
           <ul className="navbar-nav ms-auto">
 
             <li className="nav-item">
-              <a className="nav-link">Home</a>
+              <Link className="nav-link" to="/">
+                Home
+              </Link>
             </li>
 
             <li className="nav-item">
-              <a className="nav-link">Hotels</a>
+              <Link className="nav-link" to="/hotels">
+                Hotels
+              </Link>
+
             </li>
 
             <li className="nav-item">
-              <a className="nav-link">About</a>
+              <Link className="nav-link" to="/aboutus">
+                About
+              </Link>
+
             </li>
 
             <li className="nav-item">
-              <a className="nav-link">Contact</a>
+              <Link className="nav-link" to="/contactus">
+                Contact
+              </Link>
             </li>
-
             <li className="nav-item me-2">
-  <Link className="btn btn-outline-light" to="/login">
-    Login
-  </Link>
-</li>
-
-<li className="nav-item">
-  <Link className="btn btn-warning" to="/signup">
-    Sign Up
-  </Link>
-</li>
+              <Link className="btn btn-outline-light" to="/login">
+                Login
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="btn btn-warning" to="/signup">
+                Sign Up
+              </Link>
+            </li>
           </ul>
 
         </div>
