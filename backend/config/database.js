@@ -8,7 +8,11 @@ const connection = mysql.createPool({
     database: process.env.DB_NAME,
     waitForConnections: true,
     connectionLimit: 10,
-    queueLimit: 0
+    queueLimit: 0,
+     ssl: {
+    minVersion: "TLSv1.2",
+    rejectUnauthorized: true
+  }
 });
 
 module.exports = connection.promise();
