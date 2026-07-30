@@ -13,7 +13,7 @@ const createUser = async (
     const [result] = await db.promise().query(
         `
         INSERT INTO users
-        (firstname, lastname, email, phone, passwordhash)
+        (FirstName, LastName, Email, Phone, PasswordHash)
         VALUES (?, ?, ?, ?, ?)
         `,
         [
@@ -24,6 +24,7 @@ const createUser = async (
             passwordhash
         ]
     );
+
 
     return {
         id: result.insertId,
@@ -41,7 +42,7 @@ const findUserByEmail = async(email)=>{
     const [rows] = await db.promise().query(
         `
         SELECT * FROM users
-        WHERE email = ?
+        WHERE Email = ?
         `,
         [email]
     );

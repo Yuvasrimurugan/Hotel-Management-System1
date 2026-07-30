@@ -6,21 +6,30 @@ const { createUser, findUserByEmail } = require("../models/User");
 
 // Register
 
-exports.register = async (req, res) => {
+exports.register = async(req,res)=>{
 
-    try {
+    try{
 
-        const { firstname, lastname, email, phone, Password } = req.body;
+        const {
+            firstname,
+            lastname,
+            email,
+            phone,
+            password
+        } = req.body;
+
 
         const existingUser = await findUserByEmail(email);
 
-        if (existingUser) {
+        if(existingUser){
             return res.status(400).json({
-                message: "Email already exists"
+                message:"Email already exists"
             });
         }
 
-        const hashPassword = await bcrypt.hash(Password, 10);
+
+        const hashPassword = await bcrypt.hash(password,10);
+
 
         const user = await createUser(
             firstname,
@@ -32,22 +41,20 @@ exports.register = async (req, res) => {
 
 
         res.status(201).json({
-            message: "User Registered Successfully",
+            message:"User Registered Successfully",
             user
         });
 
 
-    } catch (error) {
+    }catch(error){
 
         res.status(500).json({
-            message: error.message
+            message:error.message
         });
 
     }
 
 };
-
-
 
 // Login
 
