@@ -63,9 +63,10 @@ const findUserByEmail = async(email)=>{
     return rows[0];
 
 };
-
-
 module.exports = {
+  createUser,
+  findUserByEmail,
+
     createUser,
     findUserByEmail
 };
