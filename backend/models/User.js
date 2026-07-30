@@ -1,34 +1,59 @@
 const db = require("../config/db");
 
-const createUser = async (full_name, email, password, role) => {
-  const query = `
-    INSERT INTO users (full_name, email, password, role)
-    VALUES ($1, $2, $3, $4)
-    RETURNING id, full_name, email, role, created_at;
-  `;
 
-  const values = [full_name, email, password, role];
+// Create User
+const createUser = async (
+    firstname,
+    lastname,
+    email,
+    phone,
+    passwordhash
+) => {
 
-  const result = await db.query(query, values);
+    const [result] = await db.promise().query(
+        `
+        INSERT INTO users
+        (FirstName, LastName, Email, Phone, PasswordHash)
+        VALUES (?, ?, ?, ?, ?)
+        `,
+        [
+            firstname,
+            lastname,
+            email,
+            phone,
+            passwordhash
+        ]
+    );
 
-  return result.rows[0];
+
+    return {
+        id: result.insertId,
+        firstname,
+        lastname,
+        email,
+        phone
+    };
 };
 
-const findUserByEmail = async (email) => {
-  const result = await db.query(
-    "SELECT * FROM users WHERE email = $1",
-    [email]
-  );
 
-  return result.rows[0];
+// Find User By Email
+const findUserByEmail = async(email)=>{
+
+    const [rows] = await db.promise().query(
+        `
+        SELECT * FROM users
+        WHERE Email = ?
+        `,
+        [email]
+    );
+
+    return rows[0];
+
 };
-
 module.exports = {
   createUser,
   findUserByEmail,
-exports.createUser = async (user) => {
-    return db.query(
-        "INSERT INTO users(name,email,password) VALUES(?,?,?)",
-        [user.name, user.email, user.password]
-    );
+
+    createUser,
+    findUserByEmail
 };

@@ -1,67 +1,144 @@
 const bcrypt = require("bcrypt");
-const generateToken = require("../utils/generateToken");
+const jwt = require("jsonwebtoken");
 
-// Register (Database logic will be added later)
-const register = async (req, res) => {
-  res.status(201).json({
-    success: true,
-    message: "Register API Ready (Database Pending)",
-  });
-};
+const { createUser, findUserByEmail } = require("../models/User");
 
-// Login (Using Dummy Data)
-const login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
 
-    // Dummy user
-    const user = {
-      id: 1,
-      full_name: "Nandhu",
-      email: "nandhu@gmail.com",
-      password: await bcrypt.hash("123456", 10),
-      role: "customer",
-    };
+// Register
 
-    if (email !== user.email) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid Email",
-      });
+exports.register = async(req,res)=>{
+
+    try{
+
+        const {
+            firstname,
+            lastname,
+            email,
+            phone,
+            password
+        } = req.body;
+
+
+        const existingUser = await findUserByEmail(email);
+
+        if(existingUser){
+            return res.status(400).json({
+                message:"Email already exists"
+            });
+        }
+
+
+        const hashPassword = await bcrypt.hash(password,10);
+
+
+        const user = await createUser(
+            firstname,
+            lastname,
+            email,
+            phone,
+            hashPassword
+        );
+
+
+        res.status(201).json({
+            message:"User Registered Successfully",
+            user
+        });
+
+
+    }catch(error){
+
+        res.status(500).json({
+            message:error.message
+        });
+
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid Password",
-      });
-    }
-
-    const token = generateToken(user);
-
-    res.status(200).json({
-      success: true,
-      message: "Login Successful",
-      token,
-      user: {
-        id: user.id,
-        full_name: user.full_name,
-        email: user.email,
-        role: user.role,
-      },
-    });
-
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Server Error",
-    });
-  }
 };
 
-module.exports = {
-  register,
-  login,
+// Login
+
+exports.login = async(req,res)=>{
+
+    try{
+
+        const {email,password} = req.body;
+
+
+        console.log("Login Body:", req.body);
+
+
+        const user = await findUserByEmail(email);
+
+
+        if(!user){
+
+            return res.status(400).json({
+                message:"User not found"
+            });
+
+        }
+
+
+        console.log("DB User:", user);
+
+        console.log("Password:", password);
+
+        console.log("Hash:", user.PasswordHash);
+
+
+
+        const match = await bcrypt.compare(
+            password,
+            user.PasswordHash
+        );
+
+
+        if(!match){
+
+            return res.status(400).json({
+                message:"Invalid password"
+            });
+
+        }
+
+
+        const token = jwt.sign(
+            {
+                id:user.UserID
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn:"1d"
+            }
+        );
+
+
+        res.json({
+
+            message:"Login successful",
+
+            token,
+
+            user:{
+                id:user.UserID,
+                firstname:user.FirstName,
+                lastname:user.LastName,
+                email:user.Email
+            }
+
+        });
+
+
+    }
+    catch(error){
+
+        console.log(error);
+
+        res.status(500).json({
+            message:error.message
+        });
+
+    }
+
 };

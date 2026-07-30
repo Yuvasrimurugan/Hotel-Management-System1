@@ -3,7 +3,7 @@ function Features() {
     <div className="container mt-3 mb-3">
 
       <h2 className="text-center mb-5">
-        Why Choose Us
+        Why Choose us
       </h2>
 
       <div className="row text-center">
