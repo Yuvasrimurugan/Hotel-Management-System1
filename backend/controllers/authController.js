@@ -58,37 +58,46 @@ exports.register = async(req,res)=>{
 
 // Login
 
-exports.login = async (req, res) => {
+exports.login = async(req,res)=>{
 
-    try {
+    try{
 
-        const { email, Password } = req.body;
+        const {email,password} = req.body;
+
+
+        console.log("Login Body:", req.body);
+
 
         const user = await findUserByEmail(email);
 
 
-        if (!user) {
+        if(!user){
+
             return res.status(400).json({
-                message: "User not found"
+                message:"User not found"
             });
+
         }
 
 
-        console.log("Entered Password:", Password);
-        console.log("User Data:", user);
-        console.log("Password Hash:", user.PasswordHash);
+        console.log("DB User:", user);
+
+        console.log("Password:", password);
+
+        console.log("Hash:", user.PasswordHash);
+
 
 
         const match = await bcrypt.compare(
-            Password,
+            password,
             user.PasswordHash
         );
 
 
-        if (!match) {
+        if(!match){
 
             return res.status(400).json({
-                message: "Invalid Password"
+                message:"Invalid password"
             });
 
         }
@@ -96,35 +105,38 @@ exports.login = async (req, res) => {
 
         const token = jwt.sign(
             {
-                id: user.UserID
+                id:user.UserID
             },
             process.env.JWT_SECRET,
             {
-                expiresIn: "1d"
+                expiresIn:"1d"
             }
         );
 
 
         res.json({
 
-            message: "Login successful",
+            message:"Login successful",
 
             token,
 
-            user: {
-                id: user.UserID,
-                firstname: user.FirstName,
-                lastname: user.LastName,
-                email: user.Email
+            user:{
+                id:user.UserID,
+                firstname:user.FirstName,
+                lastname:user.LastName,
+                email:user.Email
             }
 
         });
 
 
-    } catch (error) {
+    }
+    catch(error){
+
+        console.log(error);
 
         res.status(500).json({
-            message: error.message
+            message:error.message
         });
 
     }

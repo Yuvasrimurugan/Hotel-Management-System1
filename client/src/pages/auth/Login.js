@@ -100,11 +100,11 @@ function Login(){
 
 
         }
-        catch(error){
+                catch(error){
 
-            console.log(error);
+            console.log("LOGIN ERROR:", error);
 
-            alert("Server Error");
+            alert(error.message);
 
         }
 

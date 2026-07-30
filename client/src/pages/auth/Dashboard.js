@@ -1,43 +1,28 @@
-function Dashboard(){
+function Dashboard() {
 
+  const user = JSON.parse(localStorage.getItem("user"));
 
-    const user = JSON.parse(
-        localStorage.getItem("user")
-    );
+  return (
+    <div className="container py-5">
 
+      <div className="card shadow p-4">
 
+        <h2>
+          Welcome {user?.firstname} {user?.lastname}
+        </h2>
 
-    return(
+        <p>
+          Email: {user?.email}
+        </p>
 
-        <div className="container py-5">
+        <h3>
+          Customer Dashboard
+        </h3>
 
+      </div>
 
-            <div className="card shadow p-5">
-
-
-                <h1>
-                    Welcome {user?.firstname}
-                </h1>
-
-
-                <h3>
-                    Hotel Management Dashboard
-                </h3>
-
-
-                <p>
-                    Email : {user?.email}
-                </p>
-
-
-            </div>
-
-
-        </div>
-
-    );
-
+    </div>
+  );
 }
-
 
 export default Dashboard;
