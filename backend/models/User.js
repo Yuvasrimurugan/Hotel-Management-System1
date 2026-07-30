@@ -3,27 +3,40 @@ const db = require("../config/db");
 
 // Create User
 const createUser = async (
-    firstname,
-    lastname,
-    email,
-    phone,
-    passwordhash
-) => {
-
-    const [result] = await db.promise().query(
-        `
-        INSERT INTO users
-        (FirstName, LastName, Email, Phone, PasswordHash)
-        VALUES (?, ?, ?, ?, ?)
-        `,
-        [
             firstname,
             lastname,
             email,
             phone,
-            passwordhash
-        ]
-    );
+            passwordhash,
+            dateOfBirth,
+            gender,
+            address,
+            role
+
+) => {
+         const [result] = await db.promise().query(`INSERT INTO users(
+            FirstName,
+            LastName,
+            Email,
+            Phone,
+            PasswordHash,
+            DateOfBirth,
+            Gender,
+            Address,
+            Role
+            )VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+                firstname,
+                lastname,
+                email,
+                phone,
+                passwordhash,
+                dateOfBirth,
+                gender,
+                address,
+                role
+            ]
+         );
 
 
     return {

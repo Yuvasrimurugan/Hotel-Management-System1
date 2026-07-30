@@ -65,30 +65,20 @@ function Login(){
 
 
 
-            if(response.ok){
+            if (response.ok) {
 
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("user", JSON.stringify(data.user));
 
-                // Store Token
-
-                localStorage.setItem(
-                    "token",
-                    data.token
-                );
-
-
-                // Store User
-
-                localStorage.setItem(
-                    "user",
-                    JSON.stringify(data.user)
-                );
-
-
-                alert("Login Successful");
-
-
-                navigate("/dashboard");
-
+                if (data.user.role === "Admin") {
+                    navigate("/Admin");
+                }
+                else if (data.user.role === "Hotel") {
+                    navigate("/Hotel");
+                }
+                else {
+                    navigate("/Dashboard");
+                }
 
             }
             else{

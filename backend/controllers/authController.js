@@ -15,7 +15,11 @@ exports.register = async(req,res)=>{
             lastname,
             email,
             phone,
-            password
+            password,
+            dateOfBirth,
+            gender,
+            address,
+            role
         } = req.body;
 
 
@@ -28,7 +32,7 @@ exports.register = async(req,res)=>{
         }
 
 
-        const hashPassword = await bcrypt.hash(password,10);
+        const passwordhash = await bcrypt.hash(password,10);
 
 
         const user = await createUser(
@@ -36,7 +40,11 @@ exports.register = async(req,res)=>{
             lastname,
             email,
             phone,
-            hashPassword
+            passwordhash,
+            dateOfBirth,
+            gender,
+            address,
+            role
         );
 
 
@@ -124,7 +132,8 @@ exports.login = async(req,res)=>{
                 id:user.UserID,
                 firstname:user.FirstName,
                 lastname:user.LastName,
-                email:user.Email
+                email:user.Email,
+                role:user.Role
             }
 
         });
