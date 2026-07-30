@@ -139,6 +139,7 @@ function Login() {
                   />
 
                   <button
+                  tabIndex={-1}
                     type="button"
                     className="btn btn-outline-secondary"
                     onClick={() => setShowPassword(!showPassword)}

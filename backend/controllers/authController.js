@@ -6,9 +6,9 @@ const { createUser, findUserByEmail } = require("../models/User");
 
 // Register
 
-exports.register = async(req,res)=>{
+exports.register = async (req, res) => {
 
-    try{
+    try {
 
         const {
             firstname,
@@ -25,14 +25,14 @@ exports.register = async(req,res)=>{
 
         const existingUser = await findUserByEmail(email);
 
-        if(existingUser){
+        if (existingUser) {
             return res.status(400).json({
-                message:"Email already exists"
+                message: "Email already exists"
             });
         }
 
 
-        const passwordhash = await bcrypt.hash(password,10);
+        const passwordhash = await bcrypt.hash(password, 10);
 
 
         const user = await createUser(
@@ -49,15 +49,15 @@ exports.register = async(req,res)=>{
 
 
         res.status(201).json({
-            message:"User Registered Successfully",
+            message: "User Registered Successfully",
             user
         });
 
 
-    }catch(error){
+    } catch (error) {
 
         res.status(500).json({
-            message:error.message
+            message: error.message
         });
 
     }
@@ -66,11 +66,11 @@ exports.register = async(req,res)=>{
 
 // Login
 
-exports.login = async(req,res)=>{
+exports.login = async (req, res) => {
 
-    try{
+    try {
 
-        const {email,password} = req.body;
+        const { email, password } = req.body;
 
 
         console.log("Login Body:", req.body);
@@ -79,10 +79,10 @@ exports.login = async(req,res)=>{
         const user = await findUserByEmail(email);
 
 
-        if(!user){
+        if (!user) {
 
             return res.status(400).json({
-                message:"User not found"
+                message: "User not found"
             });
 
         }
@@ -102,10 +102,10 @@ exports.login = async(req,res)=>{
         );
 
 
-        if(!match){
+        if (!match) {
 
             return res.status(400).json({
-                message:"Invalid password"
+                message: "Invalid password"
             });
 
         }
@@ -113,39 +113,39 @@ exports.login = async(req,res)=>{
 
         const token = jwt.sign(
             {
-                id:user.UserID
+                id: user.UserID
             },
             process.env.JWT_SECRET,
             {
-                expiresIn:"1d"
+                expiresIn: "1d"
             }
         );
 
 
         res.json({
 
-            message:"Login successful",
+            message: "Login successful",
 
             token,
 
-            user:{
-                id:user.UserID,
-                firstname:user.FirstName,
-                lastname:user.LastName,
-                email:user.Email,
-                role:user.Role
+            user: {
+                id: user.UserID,
+                firstname: user.FirstName,
+                lastname: user.LastName,
+                email: user.Email,
+                role: user.Role
             }
 
         });
 
 
     }
-    catch(error){
+    catch (error) {
 
         console.log(error);
 
         res.status(500).json({
-            message:error.message
+            message: error.message
         });
 
     }
