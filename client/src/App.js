@@ -3,6 +3,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // Landing Pages
 import HomeLayout from "./pages/Landing/HomeLayout";
 import Home from "./pages/Landing/Home";
+import ContactUs from "./pages/Landing/ContactUs";
+import AboutUs from "./pages/Landing/AboutUs";
+import Hotel from "./pages/Landing/Hotels";
 
 // Authentication
 import Login from "./pages/auth/Login";
@@ -29,6 +32,12 @@ function App() {
         {/* Landing Page */}
         <Route path="/" element={<HomeLayout />}>
           <Route index element={<Home />} />
+
+          <Route path="contactus" element={<ContactUs />} />
+
+          <Route path="aboutus" element={<AboutUs />} />
+
+          <Route path="hotels" element={<Hotels />} />
         </Route>
 
         {/* Authentication */}
