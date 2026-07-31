@@ -18,6 +18,7 @@ function Login() {
   const handleChange = (e) => {
     setFormData({
       ...formData,
+
       [e.target.name]: e.target.value,
     });
   };
@@ -50,21 +51,33 @@ function Login() {
         return;
       }
 
+      // Save User
+
       localStorage.setItem("user", JSON.stringify(data.user));
+
+      // Save Token if available
+
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+      }
 
       const role = data.user?.role?.toLowerCase();
 
+      console.log("ROLE:", role);
+
+      // Role Redirect
+
       if (role === "admin") {
         navigate("/admin");
-      } else if (role === "manager") {
+      } else if (role === "hotel") {
         navigate("/hotel/dashboard");
       } else if (role === "customer") {
         navigate("/customer/dashboard");
       } else {
         setError("Role not found");
       }
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
 
       setError("Backend server not connected");
     } finally {
@@ -79,95 +92,84 @@ function Login() {
         background: "linear-gradient(135deg,#0f2027,#203a43,#2c5364)",
       }}
     >
-      <div className="row w-100 justify-content-center">
-        <div className="col-md-5 col-lg-4">
-          <div
-            className="card shadow-lg border-0 rounded-4 p-4"
-            style={{
-              background: "rgba(255,255,255,0.95)",
-            }}
-          >
-            <div className="text-center mb-4">
-              <div
-                className="rounded-circle bg-primary text-white mx-auto d-flex align-items-center justify-content-center"
-                style={{
-                  width: "75px",
-                  height: "75px",
-                  fontSize: "35px",
-                }}
-              >
-                🏨
-              </div>
+      <div className="col-md-5 col-lg-4">
+        <div className="card shadow-lg border-0 rounded-4 p-4">
+          <div className="text-center mb-4">
+            <div
+              className="rounded-circle bg-primary text-white mx-auto d-flex align-items-center justify-content-center"
+              style={{
+                width: "75px",
 
-              <h2 className="fw-bold mt-3">Welcome Back</h2>
+                height: "75px",
 
-              <p className="text-muted">Login to Hotel Management System</p>
+                fontSize: "35px",
+              }}
+            >
+              🏨
             </div>
 
-            {error && (
-              <div className="alert alert-danger text-center">{error}</div>
-            )}
+            <h2 className="fw-bold mt-3">Welcome Back</h2>
 
-            <form onSubmit={handleSubmit}>
-              <div className="mb-3">
-                <label className="form-label fw-semibold">Email Address</label>
+            <p className="text-muted">Hotel Management System</p>
+          </div>
 
-                <div className="input-group">
-                  <span className="input-group-text">📧</span>
+          {error && (
+            <div className="alert alert-danger text-center">{error}</div>
+          )}
 
-                  <input
-                    type="email"
-                    name="email"
-                    className="form-control"
-                    placeholder="Enter your email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-              </div>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label className="form-label fw-bold">Email</label>
 
-              <div className="mb-4">
-                <label className="form-label fw-semibold">Password</label>
-
-                <div className="input-group">
-                  <span className="input-group-text">🔒</span>
-
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    className="form-control"
-                    placeholder="Enter password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                  />
-
-                  <button
-                    type="button"
-                    className="btn btn-outline-secondary"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? "Hide" : "Show"}
-                  </button>
-                </div>
-              </div>
-
-              <button
-                className="btn btn-primary w-100 py-2 fw-bold rounded-3"
-                disabled={loading}
-              >
-                {loading ? "Logging in..." : "Login"}
-              </button>
-            </form>
-
-            <div className="text-center mt-4">
-              <span className="text-muted">Don't have an account?</span>
-
-              <Link to="/signup" className="ms-2 fw-bold text-decoration-none">
-                Create Account
-              </Link>
+              <input
+                type="email"
+                name="email"
+                className="form-control"
+                placeholder="Enter email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
             </div>
+
+            <div className="mb-3">
+              <label className="form-label fw-bold">Password</label>
+
+              <div className="input-group">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  className="form-control"
+                  placeholder="Enter password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </button>
+              </div>
+            </div>
+
+            <button
+              className="btn btn-primary w-100 py-2 fw-bold"
+              disabled={loading}
+            >
+              {loading ? "Logging in..." : "Login"}
+            </button>
+          </form>
+
+          <div className="text-center mt-4">
+            <span>Don't have account?</span>
+
+            <Link to="/signup" className="ms-2 fw-bold">
+              Create Account
+            </Link>
           </div>
         </div>
       </div>
