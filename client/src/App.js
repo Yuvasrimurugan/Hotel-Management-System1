@@ -1,25 +1,41 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+// Landing Pages
 import HomeLayout from "./pages/Landing/HomeLayout";
 import Home from "./pages/Landing/Home";
- import Login from "./pages/auth/Login";
-import Signup from "./pages/auth/Signup";
 import ContactUs from "./pages/Landing/ContactUs";
 import AboutUs from "./pages/Landing/AboutUs";
+<<<<<<< HEAD
 import Hotels from "./pages/Landing/Hotels";
 import Dashboard from "./pages/customer/Dashboard";
+=======
+import Hotel from "./pages/Landing/Hotels";
+>>>>>>> dd3a941303b556735c142db725241a804095a0d8
 
+// Authentication
+import Login from "./pages/auth/Login";
+import Signup from "./pages/auth/Signup";
+
+// Admin Layout
+import AdminLayout from "./layouts/AdminLayout";
+
+// Admin Pages
+import AdminDashboard from "./pages/Admin/AdminDashboard";
+import Hotels from "./pages/Admin/Hotel";
+import Rooms from "./pages/Admin/Rooms";
+import Users from "./pages/Admin/Users";
+import Bookings from "./pages/Admin/Booking";
+import Restaurants from "./pages/Admin/Restaurants";
+import Payments from "./pages/Admin/Payments";
+import Reports from "./pages/Admin/Reports";
+import Settings from "./pages/Admin/Settings";
 
 function App() {
-
   return (
-
     <BrowserRouter>
-
       <Routes>
-
+        {/* Landing Page */}
         <Route path="/" element={<HomeLayout />}>
-
           <Route index element={<Home />} />
 
           <Route path="contactus" element={<ContactUs />} />
@@ -27,49 +43,34 @@ function App() {
           <Route path="aboutus" element={<AboutUs />} />
 
           <Route path="hotels" element={<Hotels />} />
-
         </Route>
 
-
+        {/* Authentication */}
         <Route path="/login" element={<Login />} />
-
         <Route path="/signup" element={<Signup />} />
 
+<<<<<<< HEAD
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/hotels" element={<Hotels />} />
         
 
+=======
+        {/* Admin Module */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="hotels" element={<Hotels />} />
+          <Route path="rooms" element={<Rooms />} />
+          <Route path="users" element={<Users />} />
+          <Route path="bookings" element={<Bookings />} />
+          <Route path="restaurants" element={<Restaurants />} />
+          <Route path="payments" element={<Payments />} />
+          <Route path="reports" element={<Reports />} />
+          <Route path="settings" element={<Settings />} />
+        </Route>
+>>>>>>> dd3a941303b556735c142db725241a804095a0d8
       </Routes>
-
     </BrowserRouter>
-
   );
 }
 
 export default App;
-// import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-// function App(){
-
-//   return(
-//     <BrowserRouter>
-
-//       <Routes>
-
-//         <Route 
-//           path="/"
-//           element={<h1>Home Working</h1>}
-//         />
-
-//         <Route 
-//           path="/dashboard"
-//           element={<h1>Dashboard Working</h1>}
-//         />
-
-//       </Routes>
-
-//     </BrowserRouter>
-//   );
-// }
-
-// export default App;
