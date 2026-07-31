@@ -7,7 +7,7 @@ import Signup from "./pages/auth/Signup";
 import ContactUs from "./pages/Landing/ContactUs";
 import AboutUs from "./pages/Landing/AboutUs";
 import Hotels from "./pages/Landing/Hotels";
-import Dashboard from "./pages/auth/Dashboard";
+import Dashboard from "./pages/customer/Dashboard";
 
 
 function App() {
@@ -36,7 +36,8 @@ function App() {
         <Route path="/signup" element={<Signup />} />
 
         <Route path="/dashboard" element={<Dashboard />} />
-
+        <Route path="/hotels" element={<Hotels />} />
+        
 
       </Routes>
 

@@ -57,7 +57,26 @@ function Login(){
                     })
 
                 }
+                
             );
+            if(response.data.success){
+
+            // Save Token
+            localStorage.setItem("token", response.data.token);
+
+            // Save User (Optional)
+            localStorage.setItem(
+                "user",
+                JSON.stringify(response.data.user)
+            );
+
+            // Go to Dashboard
+            navigate("/dashboard");
+
+        }
+        
+
+            
 
 
 
