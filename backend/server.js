@@ -5,6 +5,8 @@ const cors = require("cors");
 require("./config/db"); 
 
 const authRoutes = require("./routes/authRoutes");
+const adminRoutes = require("./routes/adminRoute");
+const hotelRoutes = require("./routes/hotelRoute");
 
 const app = express();
 
@@ -16,6 +18,9 @@ app.use(express.json());
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/admin",adminRoutes);
+app.use("/api/hotel",hotelRoutes);
+
 
 
 // Test API

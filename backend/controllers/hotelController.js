@@ -1,21 +1,77 @@
-const {getHotels}=require("../models/hotelModel");
+const bcrypt = require("bcrypt");
+const db = require("../config/db");
 
-exports.allHotels=async(req,res)=>{
+exports.registerHotel = async (req, res) => {
+  try {
+    const {
+      hotelName,
+      hotelEmail,
+      hotelPhone,
+      hotelCategory,
+      ownerName,
+      ownerEmail,
+      address,
+      city,
+      state,
+      pincode,
+      password,
+    } = req.body;
 
-try{
+    const passwordHash = await bcrypt.hash(password, 10);
 
-const hotels=await getHotels();
+    const sql = `
+INSERT INTO hotels
+(
+hotelName,
+hotelEmail,
+hotelPhone,
+hotelCategory,
+ownerName,
+ownerEmail,
+address,
+city,
+state,
+pincode,
+password,
+role
+)
 
-res.json(hotels.rows);
+VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+`;
 
-}catch(err){
+    db.query(
+      sql,
 
-res.status(500).json({
+      [
+        hotelName,
+        hotelEmail,
+        hotelPhone,
+        hotelCategory,
+        ownerName,
+        ownerEmail,
+        address,
+        city,
+        state,
+        pincode,
+        passwordHash,
+        "Manager",
+      ],
 
-message:err.message
+      (err, result) => {
+        if (err) {
+          return res.status(500).json({
+            message: err.message,
+          });
+        }
 
-});
-
-}
-
+        res.json({
+          message: "Hotel Registered Successfully",
+        });
+      },
+    );
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
 };

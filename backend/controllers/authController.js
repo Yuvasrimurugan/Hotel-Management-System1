@@ -1,10 +1,12 @@
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const db = require("../config/db");
 
 const { createUser, findUserByEmail } = require("../models/User");
 
 
-// Register
+// =================================================
+// CUSTOMER REGISTER
+// =================================================
 
 exports.register = async (req, res) => {
 
@@ -23,131 +25,370 @@ exports.register = async (req, res) => {
         } = req.body;
 
 
+
         const existingUser = await findUserByEmail(email);
 
-        if (existingUser) {
+
+
+        if(existingUser){
+
             return res.status(400).json({
-                message: "Email already exists"
+
+                message:"Email already exists"
+
             });
+
         }
 
 
-        const passwordhash = await bcrypt.hash(password, 10);
+
+        const passwordHash = await bcrypt.hash(password,10);
+
 
 
         const user = await createUser(
+
             firstname,
             lastname,
             email,
             phone,
-            passwordhash,
+            passwordHash,
             dateOfBirth,
             gender,
             address,
-            role
+            role || "Customer"
+
         );
 
 
+
         res.status(201).json({
-            message: "User Registered Successfully",
-            user
+
+            message:"User Registered Successfully",
+
+            user:user
+
         });
 
 
-    } catch (error) {
+
+    }
+    catch(error){
+
+        console.log(error);
+
 
         res.status(500).json({
-            message: error.message
+
+            message:error.message
+
         });
+
 
     }
 
 };
 
-// Login
-
-exports.login = async (req, res) => {
-
-    try {
-
-        const { email, password } = req.body;
 
 
-        console.log("Login Body:", req.body);
 
 
-        const user = await findUserByEmail(email);
+// =================================================
+// LOGIN
+// =================================================
 
 
-        if (!user) {
+exports.login = async(req,res)=>{
 
-            return res.status(400).json({
-                message: "User not found"
+
+    try{
+
+
+        const {
+            email,
+            password
+        } = req.body;
+
+
+
+        // ================= USER LOGIN =================
+
+
+        const userQuery = `
+
+        SELECT *
+
+        FROM users
+
+        WHERE email=?
+
+        `;
+
+
+
+        db.query(userQuery,[email],async(err,users)=>{
+
+
+            if(err){
+
+                return res.status(500).json({
+
+                    message:"Database error"
+
+                });
+
+            }
+
+
+
+
+
+            if(users.length > 0){
+
+
+                const user = users[0];
+
+
+                console.log("USER DATA:",user);
+
+                console.log(
+                    "PASSWORD HASH:",
+                    user.PasswordHash
+                );
+
+
+
+                if(!user.PasswordHash){
+
+
+                    return res.status(500).json({
+
+                        message:"PasswordHash missing in users table"
+
+                    });
+
+
+                }
+
+
+
+
+
+                const passwordMatch = await bcrypt.compare(
+
+                    password,
+
+                    user.PasswordHash
+
+                );
+
+
+
+
+
+                if(!passwordMatch){
+
+
+                    return res.status(401).json({
+
+                        message:"Invalid password"
+
+                    });
+
+
+                }
+
+
+
+
+
+                return res.json({
+
+
+                    message:"Login successful",
+
+
+                    user:{
+
+
+                        id:user.id,
+
+                        name:user.firstname,
+
+                        email:user.email,
+
+                        role:user.role || "Customer"
+
+
+                    }
+
+
+                });
+
+
+
+            }
+
+
+
+
+
+            // ================= HOTEL LOGIN =================
+
+
+
+            const hotelQuery = `
+
+            SELECT *
+
+            FROM hotels
+
+            WHERE hotelEmail=?
+
+            `;
+
+
+
+            db.query(hotelQuery,[email],async(err,hotels)=>{
+
+
+
+                if(err){
+
+
+                    return res.status(500).json({
+
+                        message:"Database error"
+
+                    });
+
+
+                }
+
+
+
+
+
+                if(hotels.length === 0){
+
+
+                    return res.status(401).json({
+
+                        message:"Email not found"
+
+                    });
+
+
+                }
+
+
+
+
+
+                const hotel = hotels[0];
+
+
+
+                console.log("HOTEL DATA:",hotel);
+
+
+
+                if(!hotel.password){
+
+
+                    return res.status(500).json({
+
+                        message:"Hotel password missing"
+
+                    });
+
+
+                }
+
+
+
+
+
+                const passwordMatch = await bcrypt.compare(
+
+                    password,
+
+                    hotel.password
+
+                );
+
+
+
+
+
+                if(!passwordMatch){
+
+
+                    return res.status(401).json({
+
+                        message:"Invalid password"
+
+                    });
+
+
+                }
+
+
+
+
+
+                return res.json({
+
+
+                    message:"Hotel Login successful",
+
+
+                    user:{
+
+
+                        id:hotel.id,
+
+                        name:hotel.hotelName,
+
+                        email:hotel.hotelEmail,
+
+                        role:hotel.role || "Manager"
+
+
+                    }
+
+
+                });
+
+
+
             });
 
-        }
 
-
-        console.log("DB User:", user);
-
-        console.log("Password:", password);
-
-        console.log("Hash:", user.PasswordHash);
-
-
-
-        const match = await bcrypt.compare(
-            password,
-            user.PasswordHash
-        );
-
-
-        if (!match) {
-
-            return res.status(400).json({
-                message: "Invalid password"
-            });
-
-        }
-
-
-        const token = jwt.sign(
-            {
-                id: user.UserID
-            },
-            process.env.JWT_SECRET,
-            {
-                expiresIn: "1d"
-            }
-        );
-
-
-        res.json({
-
-            message: "Login successful",
-
-            token,
-
-            user: {
-                id: user.UserID,
-                firstname: user.FirstName,
-                lastname: user.LastName,
-                email: user.Email,
-                role: user.Role
-            }
 
         });
 
 
+
     }
-    catch (error) {
+
+    catch(error){
+
 
         console.log(error);
 
+
+
         res.status(500).json({
-            message: error.message
+
+            message:error.message
+
         });
 
+
+
     }
+
+
 
 };

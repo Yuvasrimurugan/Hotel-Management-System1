@@ -1,13 +1,16 @@
-const express=require("express");
+const express = require("express");
 
-const router=express.Router();
+const router = express.Router();
 
 const {
+    registerHotel
+} = require("../controllers/hotelController");
 
-allHotels
 
-}=require("../controllers/hotelController");
+router.post(
+    "/register",
+    registerHotel
+);
 
-router.get("/",allHotels);
 
-module.exports=router;
+module.exports = router;

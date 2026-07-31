@@ -44,6 +44,7 @@ hotels.map((hotel,index)=>(
 src="https://images.unsplash.com/photo-1566073771259-6a8506099945"
 height="140"
 className="card-img-top"
+alt="hotel-logo"
 />
 
 <div className="card-body">
