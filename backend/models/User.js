@@ -67,6 +67,5 @@ module.exports = {
   createUser,
   findUserByEmail,
 
-    createUser,
-    findUserByEmail
 };
+

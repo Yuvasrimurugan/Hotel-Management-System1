@@ -22,121 +22,115 @@ function Login() {
     });
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   setError("");
+  //   setLoading(true);
+
+  //   try {
+  //     const response = await fetch("http://localhost:5000/api/auth/login", {
+  //       method: "POST",
+
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+
+  //       body: JSON.stringify(formData),
+  //     });
+
+  //     const data = await response.json();
+
+
+
+  //   };
+
+
+
   const handleSubmit = async (e) => {
+
     e.preventDefault();
 
-    setError("");
-    setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
 
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const response = await fetch(
+        "http://localhost:5000/api/auth/login",
+        {
 
-        body: JSON.stringify(formData),
-      });
+          method: "POST",
+          body: JSON.stringify({
+
+            email: formData.email,
+
+            password: formData.password
+
+          }),
+
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+
+      );
+      if (response.data.success) {
+
+        // Save Token
+        localStorage.setItem("token", response.data.token);
+
+        // Save User (Optional)
+        localStorage.setItem(
+          "user",
+          JSON.stringify(response.data.user)
+        );
+
+        // Go to Dashboard
+        navigate("/dashboard");
+
+      }
+
+
+
+
+
 
       const data = await response.json();
 
-<<<<<<< HEAD
-        });
-
-    };
 
 
-
-    const handleSubmit=async(e)=>{
-
-        e.preventDefault();
+      if (response.ok) {
 
 
-        try{
+        // Store Token
 
-            const response = await fetch(
-                "http://localhost:5000/api/auth/login",
-                {
-
-                    method:"POST",
-
-                    headers:{
-                        "Content-Type":"application/json"
-                    },
+        localStorage.setItem(
+          "token",
+          data.token
+        );
 
 
-                    body:JSON.stringify({
+        // Store User
 
-                        email:formData.email,
-
-                        password:formData.password
-
-                    })
-
-                }
-                
-            );
-            if(response.data.success){
-
-            // Save Token
-            localStorage.setItem("token", response.data.token);
-
-            // Save User (Optional)
-            localStorage.setItem(
-                "user",
-                JSON.stringify(response.data.user)
-            );
-
-            // Go to Dashboard
-            navigate("/dashboard");
-
-        }
-        
-
-            
+        localStorage.setItem(
+          "user",
+          JSON.stringify(data.user)
+        );
 
 
-
-            const data = await response.json();
-
+        alert("Login Successful");
 
 
-            if(response.ok){
+        navigate("/dashboard");
 
 
-                // Store Token
+      }
+      else {
 
-                localStorage.setItem(
-                    "token",
-                    data.token
-                );
+        alert(data.message);
 
-
-                // Store User
-
-                localStorage.setItem(
-                    "user",
-                    JSON.stringify(data.user)
-                );
-
-
-                alert("Login Successful");
-
-
-                navigate("/dashboard");
-
-
-            }
-            else{
-
-                alert(data.message);
-
-            }
-=======
+      }
       if (response.ok) {
         localStorage.setItem("token", data.token);
->>>>>>> dd3a941303b556735c142db725241a804095a0d8
 
         localStorage.setItem("user", JSON.stringify(data.user));
 
@@ -233,7 +227,7 @@ function Login() {
                   />
 
                   <button
-                  tabIndex={-1}
+                    tabIndex={-1}
                     type="button"
                     className="btn btn-outline-secondary"
                     onClick={() => setShowPassword(!showPassword)}

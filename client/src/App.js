@@ -5,12 +5,9 @@ import HomeLayout from "./pages/Landing/HomeLayout";
 import Home from "./pages/Landing/Home";
 import ContactUs from "./pages/Landing/ContactUs";
 import AboutUs from "./pages/Landing/AboutUs";
-<<<<<<< HEAD
-import Hotels from "./pages/Landing/Hotels";
-import Dashboard from "./pages/customer/Dashboard";
-=======
 import Hotel from "./pages/Landing/Hotels";
->>>>>>> dd3a941303b556735c142db725241a804095a0d8
+import Dashboard from "./pages/customer/Dashboard";
+// import Hotel from "./pages/Landing/Hotels";
 
 // Authentication
 import Login from "./pages/auth/Login";
@@ -49,12 +46,10 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
-<<<<<<< HEAD
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/hotels" element={<Hotels />} />
-        
 
-=======
+
         {/* Admin Module */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
@@ -67,7 +62,6 @@ function App() {
           <Route path="reports" element={<Reports />} />
           <Route path="settings" element={<Settings />} />
         </Route>
->>>>>>> dd3a941303b556735c142db725241a804095a0d8
       </Routes>
     </BrowserRouter>
   );
