@@ -4,16 +4,16 @@ import { Link, useNavigate } from "react-router-dom";
 function Login() {
   const navigate = useNavigate();
 
-  const [showPassword, setShowPassword] = useState(false);
-
-  const [loading, setLoading] = useState(false);
-
-  const [error, setError] = useState("");
-
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+  const [error, setError] = useState("");
+
+  const [loading, setLoading] = useState(false);
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -26,6 +26,7 @@ function Login() {
     e.preventDefault();
 
     setError("");
+
     setLoading(true);
 
     try {
@@ -41,27 +42,31 @@ function Login() {
 
       const data = await response.json();
 
-      if (response.ok) {
-        localStorage.setItem("token", data.token);
+      console.log("LOGIN RESPONSE:", data);
 
-        localStorage.setItem("user", JSON.stringify(data.user));
+      if (!response.ok) {
+        setError(data.message || "Invalid email or password");
 
-        const role = data.user.Role || data.user.role;
-
-        if (role?.toLowerCase() === "admin") {
-          navigate("/admin");
-        } else if (role?.toLowerCase() === "hotel") {
-          navigate("/Hotel");
-        } else {
-          navigate("/Dashboard");
-        }
-      } else {
-        setError(data.message || "Invalid login details");
+        return;
       }
-    } catch (error) {
-      setError("Server connection failed");
 
-      console.log(error);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      const role = data.user?.role?.toLowerCase();
+
+      if (role === "admin") {
+        navigate("/admin");
+      } else if (role === "manager") {
+        navigate("/hotel/dashboard");
+      } else if (role === "customer") {
+        navigate("/customer/dashboard");
+      } else {
+        setError("Role not found");
+      }
+    } catch (err) {
+      console.log(err);
+
+      setError("Backend server not connected");
     } finally {
       setLoading(false);
     }
@@ -69,50 +74,52 @@ function Login() {
 
   return (
     <div
-      className="container-fluid vh-100 d-flex align-items-center justify-content-center"
+      className="container-fluid min-vh-100 d-flex align-items-center justify-content-center"
       style={{
-        background: "#f5f7fb",
+        background: "linear-gradient(135deg,#0f2027,#203a43,#2c5364)",
       }}
     >
       <div className="row w-100 justify-content-center">
         <div className="col-md-5 col-lg-4">
-          <div className="card shadow-lg border-0 rounded-4 p-4">
+          <div
+            className="card shadow-lg border-0 rounded-4 p-4"
+            style={{
+              background: "rgba(255,255,255,0.95)",
+            }}
+          >
             <div className="text-center mb-4">
               <div
-                className="bg-primary text-white rounded-circle mx-auto mb-3"
+                className="rounded-circle bg-primary text-white mx-auto d-flex align-items-center justify-content-center"
                 style={{
-                  width: "70px",
-                  height: "70px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "32px",
+                  width: "75px",
+                  height: "75px",
+                  fontSize: "35px",
                 }}
               >
                 🏨
               </div>
 
-              <h2 className="fw-bold">Welcome Back</h2>
+              <h2 className="fw-bold mt-3">Welcome Back</h2>
 
               <p className="text-muted">Login to Hotel Management System</p>
             </div>
 
-            {error && <div className="alert alert-danger">{error}</div>}
+            {error && (
+              <div className="alert alert-danger text-center">{error}</div>
+            )}
 
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label className="form-label fw-semibold">Email Address</label>
 
                 <div className="input-group">
-                  <span className="input-group-text">
-                    <i className="bi bi-envelope"></i>
-                  </span>
+                  <span className="input-group-text">📧</span>
 
                   <input
                     type="email"
                     name="email"
                     className="form-control"
-                    placeholder="Enter email"
+                    placeholder="Enter your email"
                     value={formData.email}
                     onChange={handleChange}
                     required
@@ -120,13 +127,11 @@ function Login() {
                 </div>
               </div>
 
-              <div className="mb-3">
+              <div className="mb-4">
                 <label className="form-label fw-semibold">Password</label>
 
                 <div className="input-group">
-                  <span className="input-group-text">
-                    <i className="bi bi-lock"></i>
-                  </span>
+                  <span className="input-group-text">🔒</span>
 
                   <input
                     type={showPassword ? "text" : "password"}
@@ -139,20 +144,17 @@ function Login() {
                   />
 
                   <button
-                  tabIndex={-1}
                     type="button"
                     className="btn btn-outline-secondary"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    <i
-                      className={showPassword ? "bi bi-eye-slash" : "bi bi-eye"}
-                    ></i>
+                    {showPassword ? "Hide" : "Show"}
                   </button>
                 </div>
               </div>
 
               <button
-                className="btn btn-primary w-100 py-2 fw-bold"
+                className="btn btn-primary w-100 py-2 fw-bold rounded-3"
                 disabled={loading}
               >
                 {loading ? "Logging in..." : "Login"}
@@ -162,8 +164,8 @@ function Login() {
             <div className="text-center mt-4">
               <span className="text-muted">Don't have an account?</span>
 
-              <Link to="/signup" className="text-decoration-none ms-2 fw-bold">
-                Signup
+              <Link to="/signup" className="ms-2 fw-bold text-decoration-none">
+                Create Account
               </Link>
             </div>
           </div>
